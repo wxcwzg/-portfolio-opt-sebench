@@ -1,0 +1,26 @@
+=== Baseline: Equal-Weight Portfolio ===
+
+Strategy: 1/N equal weight across all 50 assets, no rebalancing.
+
+Run command: python baseline.py
+
+Output: weights.csv (250 days × 50 assets, all weights = 0.02)
+
+--- Evaluation Results ---
+Overlapping dates: 250
+Sharpe Ratio: 0.8911
+Annual Return: 8.85%
+Annual Volatility: 7.31%
+Max Drawdown: -4.67%
+Score: 8.91 / 100
+
+--- Blank Baseline (no weights.csv) ---
+Score: 0 / 100 (file not found)
+
+--- Score Range Reference ---
+Equal-weight (1/N):     ~9 points
+Random weights:         ~5-12 points
+Simple Mean-Variance:   ~15-20 points
+Risk Parity:            ~15-25 points
+Advanced optimization:  ~25-40 points
+Oracle (future data):   ~53 points

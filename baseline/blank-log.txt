@@ -1,0 +1,8 @@
+=== Blank Baseline (Agent start state, no modification) ===
+
+No weights.csv exists in the working directory.
+
+--- Evaluation Results ---
+ERROR: weights.csv not found
+CASE 0001 FAIL score=0
+TOTAL_SCORE 0
