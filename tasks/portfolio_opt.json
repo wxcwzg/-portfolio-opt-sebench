@@ -11,16 +11,21 @@
   "submit_exclude": ["data/", "tools/"],
   "work": {
     "setup_cmds": [
-      "mkdir -p /home/workspace/portfolio_opt",
-      "pip install numpy==1.26.4 pandas==2.2.2 scipy==1.13.0 scikit-learn==1.4.2"
+      "mkdir -p /home/workspace && cd /home/workspace && git clone https://github.com/wxcwzg/-portfolio-opt-sebench.git portfolio_opt_repo",
+      "cp -r /home/workspace/portfolio_opt_repo/agent-start /home/workspace/portfolio_opt",
+      "cd /home/workspace/portfolio_opt && pip install numpy==1.26.4 pandas==2.2.2 scipy==1.13.0 scikit-learn==1.4.2",
+      "cd /home/workspace/portfolio_opt && rm -rf .git && git init && git config user.email 'sebench@local' && git config user.name 'sebench' && git add -A && git commit -m 'init'"
     ],
     "specs_dir": null,
-    "agent_query": "## Role\n\nYou are a quantitative researcher building a dynamic portfolio optimization system for 50 assets.\n\n## Project Overview\n\nGiven 4 years (1000 trading days) of historical daily returns for 50 assets, generate optimal daily portfolio weights for the next 250 trading days to maximize out-of-sample Sharpe Ratio.\n\n## Key Files\n\n- `README.md`: Full task description and constraints\n- `data/returns_train.csv`: Training data (1000 days × 50 assets)\n- `baseline.py`: Equal-weight baseline (generates weights.csv)\n- `tools/evaluate_local.py`: Local evaluation using train[800:] as validation\n\n## What to Do\n\n1. Read `README.md` for full requirements\n2. Analyze training data to understand asset characteristics\n3. Implement portfolio optimization (mean-variance, risk parity, shrinkage estimators, dynamic rebalancing, etc.)\n4. Generate `weights.csv` in the project root\n5. Use `python tools/evaluate_local.py` to validate locally\n6. Use `sebench-submit` to submit for official scoring\n\n## Constraints\n\n- Weights must sum to 1 (±5% tolerance)\n- All weights >= 0 (long-only)\n- Transaction cost: 0.1% per unit turnover\n- No internet access, CPU only, ≤4GB memory\n\n## Scoring\n\n- Total = Sharpe Score (up to 90) + Constraint Compliance (10)\n- Sharpe Score = min(100, sharpe_ratio × 10)\n- Higher Sharpe = higher score\n- Constraint violations halve the score\n\n## Tips\n\n- Equal-weight (1/N) is a strong baseline but not optimal\n- Covariance estimation is critical — sample covariance overfits with 50 assets\n- Consider: Ledoit-Wolf shrinkage, factor models, robust estimation\n- Regime changes exist in the data — static optimization may fail\n- Beware of overfitting to training period statistics"
+    "agent_query": "## Role\n\nYou are a quantitative researcher building a dynamic portfolio optimization system for 50 assets.\n\n## Project Overview\n\nGiven 4 years (1000 trading days) of historical daily returns for 50 assets, generate optimal daily portfolio weights for the next 250 trading days to maximize out-of-sample Sharpe Ratio.\n\n## Key Files\n\n- `README.md`: Full task description and constraints\n- `data/returns_train.csv`: Training data (1000 days × 50 assets)\n- `baseline.py`: Equal-weight baseline (generates weights.csv)\n- `tools/evaluate_local.py`: Local evaluation using train[800:] as validation\n\n## What to Do\n\n1. Read `README.md` for full requirements\n2. Analyze training data to understand asset characteristics\n3. Implement portfolio optimization (mean-variance, risk parity, shrinkage estimators, dynamic rebalancing, etc.)\n4. Generate `weights.csv` in the project root\n5. Use `python tools/evaluate_local.py` to validate locally\n6. Use `sebench-submit` to submit for official scoring\n\n## Constraints\n\n- Weights must sum to 1 (±5% tolerance)\n- All weights >= 0 (long-only)\n- Transaction cost: 0.1% per unit turnover\n- No internet access, CPU only, ≤4GB memory\n\n## Scoring\n\n- Total = min(100, sharpe_ratio × 10)\n- Higher Sharpe = higher score\n- Constraint violations (weights not summing to 1, or short selling) halve the score\n\n## Tips\n\n- Equal-weight (1/N) is a strong baseline but not optimal\n- Covariance estimation is critical — sample covariance overfits with 50 assets\n- Consider: Ledoit-Wolf shrinkage, factor models, robust estimation\n- Regime changes exist in the data — static optimization may fail\n- Beware of overfitting to training period statistics"
   },
   "judge": {
     "setup_cmds": [
+      "mkdir -p /home/workspace && cd /home/workspace && git clone https://github.com/wxcwzg/-portfolio-opt-sebench.git portfolio_opt_repo",
       "mkdir -p /home/workspace/portfolio_opt/scorer/eval-data",
-      "pip install numpy==1.26.4 pandas==2.2.2 scipy==1.13.0 scikit-learn==1.4.2"
+      "cp /home/workspace/portfolio_opt_repo/scorer/evaluate.py /home/workspace/portfolio_opt/scorer/evaluate.py",
+      "cp /home/workspace/portfolio_opt_repo/scorer/eval-data/returns_test.csv /home/workspace/portfolio_opt/scorer/eval-data/returns_test.csv",
+      "cd /home/workspace/portfolio_opt && pip install numpy==1.26.4 pandas==2.2.2 scipy==1.13.0 scikit-learn==1.4.2"
     ],
     "eval_cmd": "cd /home/workspace/portfolio_opt && python3 scorer/evaluate.py",
     "eval_timeout": 120,
