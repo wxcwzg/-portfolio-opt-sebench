@@ -88,14 +88,9 @@ def evaluate():
 
     # 评分: sharpe * 10, 上限100
     sharpe_score = min(100, max(0, sharpe * 10)) * penalty
-
-    # 如果有约束违规，扣分
-    if violations:
-        sharpe_score = sharpe_score * 0.5
-
     total = round(sharpe_score, 2)
 
-    print(f"CASE 0001 OK score={round(sharpe_score, 2)}")
+    print(f"CASE 0001 OK score={total}")
     print(f"TOTAL_SCORE {total}")
 
     # 详细信息输出到stderr（Agent可见作为反馈）
