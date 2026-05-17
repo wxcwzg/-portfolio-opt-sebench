@@ -11,8 +11,7 @@
   "submit_exclude": ["data/", "tools/"],
   "work": {
     "setup_cmds": [
-      "mkdir -p /home/workspace && cd /home/workspace && git clone https://github.com/wxcwzg/-portfolio-opt-sebench.git portfolio_opt_repo",
-      "cp -r /home/workspace/portfolio_opt_repo/agent-start /home/workspace/portfolio_opt",
+      "cp -r /opt/portfolio_opt_agent /home/workspace/portfolio_opt",
       "cd /home/workspace/portfolio_opt && pip install numpy==1.26.4 pandas==2.2.2 scipy==1.13.0 scikit-learn==1.4.2",
       "cd /home/workspace/portfolio_opt && rm -rf .git && git init && git config user.email 'sebench@local' && git config user.name 'sebench' && git add -A && git commit -m 'init'"
     ],
@@ -21,10 +20,8 @@
   },
   "judge": {
     "setup_cmds": [
-      "mkdir -p /home/workspace && cd /home/workspace && git clone https://github.com/wxcwzg/-portfolio-opt-sebench.git portfolio_opt_repo",
       "mkdir -p /home/workspace/portfolio_opt/scorer/eval-data",
-      "cp /home/workspace/portfolio_opt_repo/scorer/evaluate.py /home/workspace/portfolio_opt/scorer/evaluate.py",
-      "cp /home/workspace/portfolio_opt_repo/scorer/eval-data/returns_test.csv /home/workspace/portfolio_opt/scorer/eval-data/returns_test.csv",
+      "cp -r /opt/portfolio_opt_scorer/* /home/workspace/portfolio_opt/scorer/",
       "cd /home/workspace/portfolio_opt && pip install numpy==1.26.4 pandas==2.2.2 scipy==1.13.0 scikit-learn==1.4.2"
     ],
     "eval_cmd": "cd /home/workspace/portfolio_opt && python3 scorer/evaluate.py",

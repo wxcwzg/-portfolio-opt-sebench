@@ -58,15 +58,9 @@ def evaluate():
     weight_sums = weights.sum(axis=1)
     if (weight_sums - 1.0).abs().max() > 0.05:
         penalty *= 0.5
-        print(f"CASE 0002 FAIL score=0", file=sys.stdout)
-    else:
-        print(f"CASE 0002 OK score=5")
 
     if (weights < -0.001).any().any():
         penalty *= 0.5
-        print(f"CASE 0003 FAIL score=0")
-    else:
-        print(f"CASE 0003 OK score=5")
 
     # 换手率
     turnover = weights.diff().abs().sum(axis=1)
@@ -90,8 +84,16 @@ def evaluate():
     sharpe_score = min(100, max(0, sharpe * 10)) * penalty
     total = round(sharpe_score, 2)
 
-    print(f"CASE 0001 OK score={total}")
+    # 输出格式：用100个CASE编码分数，pass_rate即为分数/100
+    n_passed = int(round(total))
+    n_failed = 100 - n_passed
+    for i in range(n_passed):
+        print(f"CASE {i:04d} OK score=1")
+    for i in range(n_passed, 100):
+        print(f"CASE {i:04d} WA score=0")
     print(f"TOTAL_SCORE {total}")
+    print(f"CASES_OK {n_passed}")
+    print(f"CASES_TOTAL 100")
 
     # 详细信息输出到stderr（Agent可见作为反馈）
     print(f"\n--- Portfolio Metrics ---", file=sys.stderr)
